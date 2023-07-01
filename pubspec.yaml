@@ -1,7 +1,7 @@
 name: zerotier_sockets
 description: libzt bindings for Flutter
 version: 1.0.0
-repository: github.com/nuc134r/zerotier_sockets
+repository: https://github.com/nuc134r/zerotier_sockets_flutter
 
 environment:
   sdk: '>=2.19.5 <3.0.0'
