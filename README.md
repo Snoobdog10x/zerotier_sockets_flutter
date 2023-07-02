@@ -1,14 +1,17 @@
 # zerotier_sockets
 
-Flutter bindings for the [libzt](https://github.com/zerotier/libzt) library. Uses FFI to call into native library. 
+Flutter plugin providing bindings for the [libzt](https://github.com/zerotier/libzt) library. Uses `dart:ffi`. 
 
-Native binaries are distributed in the plugin itself, so this is Flutter plugin, not Dart plugin. Someday plugin may be split into Flutter plugin distributing binaries and separate Dart FFI wrapper for use in commandline Dart apps. 
+In order to distribute binaries it [currently](https://github.com/dart-lang/sdk/issues/50565) has to be a Flutter plugin, not a Dart package.
 
 ## Supported platforms
 
 Currently only supports Android. 
 
-To support other platforms platform specific folder must be added with native dependency built from [libzt](https://github.com/zerotier/libzt) and `loader.dart` must be fixed accordingly.
+To support other platforms:
+* Platform specific folder must be created with default contents
+* Library file built from [libzt](https://github.com/zerotier/libzt) must be included into corresponding platform build process inside platform folder 
+* `loader.dart` must be fixed accordingly to include new platform
 
 ## Usage
 
@@ -53,20 +56,42 @@ Future<void> startNodeAndConnectToNetwork(String networkId) async {
   print(networkInfo.address);
   print(networkInfo.id);
 
-  // connect socket
   ZeroTierSocket socket;
   try {
+    // connect socket
     socket = await ZeroTierSocket.connect('10.144.242.244', 22);
-
-    // send data
-    socket.sink.add([1, 2, 3, 4, 5]);
-
-    // listen for data
-    socket.stream.listen((data) => print('received ${data.length} byte(s)'));
   } catch (e) {
     print('Failed to connect socket: $e');
-  } finally {
     socket.close();
+    return;
   }
+  
+  // send data
+  socket.sink.add([1, 2, 3, 4, 5]);
+
+  // listen for data
+  socket.stream.listen((data) => print('received ${data.length} byte(s)'));
+
+  // detect socket close
+  socket.done.then((_) => print('socket closed'));
+  
+  // don't forget to close sockets
+  socket.close();
 }
 ```
+
+## Events
+
+`libzt` provides a way to pass a callback method that is called from background thread when an event happens. 
+
+The problem is that Dart and Flutter do not support invoking into isolate thread.
+
+The ways to work that around:
+
+* Fork `libzt` and use `Dart_Port` as explained [here](https://gist.github.com/espresso3389/be5674ab4e3154f0b7c43715dcef3d8d)
+
+* Wait for Dart team to [implement calls from background threads](https://github.com/dart-lang/sdk/issues/37022)
+
+* Platform channels can be used as well but must be implemented for each platform separately which is not ideal. Also Java API passes a limited set of events and data
+
+In first two scenarios `libzt` must be built with `ZTS_C_API_ONLY` def, because Java callbacks will not be used.
