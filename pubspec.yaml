@@ -1,6 +1,6 @@
 name: zerotier_sockets
-description: libzt bindings for Flutter
-version: 1.0.0
+description: ZeroTier Socket API (libzt) ffi bindings for Dart as a Flutter plugin.
+version: 1.0.0+1
 repository: https://github.com/nuc134r/zerotier_sockets_flutter
 
 environment:
