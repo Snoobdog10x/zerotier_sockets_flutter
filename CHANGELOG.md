@@ -4,4 +4,4 @@
 
 ## 1.0.0
 
-* UDP client socket implementation
+* TCP client socket implementation

@@ -98,4 +98,4 @@ The ways to work that around:
 
 * Platform channels can be used as well but must be implemented for each platform separately which is not ideal. Also Java API passes a limited set of events and data
 
-In first two scenarios `libzt` must be built with `ZTS_C_API_ONLY` def, because Java callbacks will not be used.
+In first two scenarios `libzt` must be built with `ZTS_C_API_ONLY` defined (build script needs a fix for that) or else Android build will use JNI callback which is just two ints.
