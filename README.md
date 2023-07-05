@@ -1,5 +1,7 @@
 # zerotier_sockets
 
+[![pub package](https://img.shields.io/pub/v/zerotier_sockets.svg)](https://pub.dartlang.org/packages/zerotier_sockets)
+
 Flutter plugin providing bindings for the [libzt](https://github.com/zerotier/libzt) library. Uses `dart:ffi`. 
 
 In order to distribute binaries it [currently](https://github.com/dart-lang/sdk/issues/50565) has to be a Flutter plugin, not a Dart package.
@@ -16,6 +18,8 @@ To support other platforms:
 ## Usage
 
 For more detailed usage see `example` folder. Also refer to [ZeroTier Sockets tutorial](https://docs.zerotier.com/sockets/tutorial.html).
+
+Only client TCP sockets are implemented yet.
 
 ```dart
 import 'package:zerotier_sockets/zerotier_sockets.dart';

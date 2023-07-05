@@ -1,3 +1,7 @@
+## 1.1.0
+
+* Node id's are now `BigInt`s
+
 ## 1.0.0
 
-* Client socket implementation
+* UDP client socket implementation

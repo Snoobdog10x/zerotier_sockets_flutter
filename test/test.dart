@@ -2,7 +2,7 @@
 import 'package:zerotier_sockets/src/extensions.dart';
 
 void main() {
-  test('uint64 which overflows int64 is casted to int64 with same bits', () {
+  test('BigInt which overflows int is casted to int with same bits', () {
     var a = BigInt.parse("8850338390d0e5ad", radix: 16);
     var b = a.toIntBitwise();
 
@@ -11,6 +11,19 @@ void main() {
 
     var binary1 = _Utils.numToBinaryStr(a, BigInt.zero, BigInt.one, 64);
     var binary2 = _Utils.numToBinaryStr(b, 0, 1, 64);
+
+    expect(binary1, equals(binary2));
+  });
+
+  test('int value can be converted back to BigInt with same bits', () {
+    var original = BigInt.parse("8850338390d0e5ad", radix: 16);
+    var intValue = original.toIntBitwise();
+    var bigIntValue = intValue.toBigIntBitwise();
+
+    expect(original, equals(bigIntValue));
+
+    var binary1 = _Utils.numToBinaryStr(original, BigInt.zero, BigInt.one, 64);
+    var binary2 = _Utils.numToBinaryStr(bigIntValue, BigInt.zero, BigInt.one, 64);
 
     expect(binary1, equals(binary2));
   });

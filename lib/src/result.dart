@@ -7,7 +7,7 @@ import 'zts.dart';
 class ZeroTierResult {
   ZeroTierResult(int res, [int errno = 0]) {
     result = res;
-    success = res >= zts_error_t.ZTS_ERR_OK;
+    success = res >= zts_error_t.ZTS_ERR_OK || res < zts_error_t.ZTS_ERR_GENERAL;
     if (!success) {
       errorType = getErrorType(res);
       errorMessage = getErrorMessage(res);

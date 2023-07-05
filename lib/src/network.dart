@@ -20,7 +20,7 @@ class ZeroTierNetwork {
   final BigInt id;
   String get idString => id.toRadixString(16);
   final bool transportIsReady;
-  final int mac;
+  final BigInt mac;
   final String macString;
   final bool broadcastEnabled;
   final int mtu;

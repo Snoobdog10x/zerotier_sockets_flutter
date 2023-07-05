@@ -12,7 +12,8 @@ class ZeroTierNode {
   static final ZeroTierNode instance = ZeroTierNode._();
   ZeroTierNode._();
 
-  bool get running => zts.node_get_id() > 0;
+  bool get running => getId().success;
+
   bool get online => zts.node_is_online() == 1;
 
   /// Set path to storage directory.
@@ -137,9 +138,10 @@ class ZeroTierNode {
   }
 
   /// Get node id
-  ZeroTierResultWithData<int> getId() {
-    final id = zts.node_get_id();
-    return ZeroTierResultWithData(id, id);
+  ZeroTierResultWithData<BigInt> getId() {
+    final res = zts.node_get_id();
+    final id = res.toBigIntBitwise();
+    return ZeroTierResultWithData(res, id);
   }
 
   /// Leave network
@@ -179,7 +181,7 @@ class ZeroTierNode {
     if (res < 0) return null;
 
     var transportIsReady = zts.net_transport_is_ready(nwId) == 1;
-    var mac = zts.net_get_mac(nwId);
+    var mac = zts.net_get_mac(nwId).toBigIntBitwise();
 
     var macStrPointer = NativeString.empty(ZTS_MAC_ADDRSTRLEN);
     res = zts.net_get_mac_str(nwId, macStrPointer.pointer, ZTS_MAC_ADDRSTRLEN);

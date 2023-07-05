@@ -1,6 +1,6 @@
 ﻿import 'dart:typed_data';
 
-extension NumEx on BigInt {
+extension BigIntEx on BigInt {
   /// Convert [BigInt] to [int].
   /// Copies bits as is, without truncating value to a signed 64 bit integer.
   /// Allows setting valid unsigned 64 bit value to Dart's [int] to pass into native code expecting uint64 value.
@@ -20,5 +20,22 @@ extension NumEx on BigInt {
 
     // interpret byte array as int (bits takes as is)
     return result.buffer.asInt64List().single;
+  }
+}
+
+extension IntEx on int {
+  BigInt toBigIntBitwise() {
+    var bytes = Uint8List(8);
+    //bytes.buffer.asInt64List()[0] = this;
+    bytes.buffer.asByteData().setInt64(0, this, Endian.big);
+
+    BigInt resultValue = BigInt.zero;
+
+    for (final byte in bytes) {
+      // reading in big-endian, so we essentially concat the new byte to the end
+      resultValue = (resultValue << 8) | BigInt.from(byte & 0xff);
+    }
+
+    return resultValue;
   }
 }

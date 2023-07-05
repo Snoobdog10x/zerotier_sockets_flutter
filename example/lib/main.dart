@@ -142,9 +142,9 @@ class HomePageState extends State<HomePage> {
       needUpdate = true;
     }
 
-    final identityResult = _node.getIdentity();
-    if (identityResult.success) {
-      var identity = ZeroTierUtils.getIdentityString(identityResult.data1);
+    final id = _node.getId();
+    if (id.success) {
+      var identity = id.data.toRadixString(16);
       if (identity != _identity) {
         _identity = identity ?? 'none';
         needUpdate = true;
