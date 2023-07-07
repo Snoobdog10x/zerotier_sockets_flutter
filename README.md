@@ -15,6 +15,8 @@ To support other platforms:
 * Library file built from [libzt](https://github.com/zerotier/libzt) must be included into corresponding platform build process inside platform folder 
 * `loader.dart` must be fixed accordingly to include new platform
 
+Also see https://github.com/nuc134r/zerotier_sockets_flutter/issues/2
+
 ## Usage
 
 For more detailed usage see `example` folder. Also refer to [ZeroTier Sockets tutorial](https://docs.zerotier.com/sockets/tutorial.html).
@@ -86,16 +88,4 @@ Future<void> startNodeAndConnectToNetwork(String networkId) async {
 
 ## Events
 
-`libzt` provides a way to pass a callback method that is called from background thread when an event happens. 
-
-The problem is that Dart and Flutter do not support invoking into isolate thread.
-
-The ways to work that around:
-
-* Fork `libzt` and use `Dart_Port` as explained [here](https://gist.github.com/espresso3389/be5674ab4e3154f0b7c43715dcef3d8d)
-
-* Wait for Dart team to [implement calls from background threads](https://github.com/dart-lang/sdk/issues/37022)
-
-* Platform channels can be used as well but must be implemented for each platform separately which is not ideal. Also Java API passes a limited set of events and data
-
-In first two scenarios `libzt` must be built with `ZTS_C_API_ONLY` defined (build script needs a fix for that) or else Android build will use JNI callback which is just two ints.
+See https://github.com/nuc134r/zerotier_sockets_flutter/issues/1
